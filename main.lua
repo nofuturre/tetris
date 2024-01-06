@@ -22,14 +22,11 @@ function love.update(dt)
     timer = timer + dt
     if timer >= pieces_fall_speed then
         timer = 0
-        if piece_y < gridHeight - #piecesStructures[pieceType][pieceRotation] then
-            piece_y = piece_y + 1
-        else
+        if checkCollision() then
             lockPiece()
-            pieceType = math.random(1, #piecesStructures)
-            pieceRotation = 1
-            piece_x = 3
-            piece_y = 0
+            generatePiece()
+        else
+            piece_y = piece_y + 1
         end
     end
 end

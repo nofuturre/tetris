@@ -60,6 +60,21 @@ function move(key)
     end
 end
 
+function checkCollision()
+    if piece_y >= gridHeight - #piecesStructures[pieceType][pieceRotation] then
+        return true
+    end
+    for y = 1, #piecesStructures[pieceType][pieceRotation] do
+        for x = 1, #piecesStructures[pieceType][pieceRotation][1] do
+            local block = piecesStructures[pieceType][pieceRotation][y][x]
+            if block ~= ' ' and grid[x + piece_x][y + piece_y + 1] ~= ' ' then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 function lockPiece()
     for y = 1, #piecesStructures[pieceType][pieceRotation] do
         for x = 1, #piecesStructures[pieceType][pieceRotation][1] do
@@ -69,4 +84,11 @@ function lockPiece()
             end
         end
     end
+end
+
+function generatePiece()
+    pieceType = math.random(1, #piecesStructures)
+    pieceRotation = 1
+    piece_x = 3
+    piece_y = 0
 end
