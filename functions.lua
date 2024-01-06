@@ -86,6 +86,28 @@ function lockPiece()
     end
 end
 
+function clearRow(complete_row)
+    for x = 1, gridWidth do
+        for y = complete_row, 2, -1 do
+            grid[x][y] = grid[x][y - 1]
+        end
+    end
+end
+
+function findCompleteRows()
+    for y = 1, gridHeight do
+        local complete_row = true
+        for x = 1, gridWidth do
+            if grid[x][y] == ' ' then
+                complete_row = false
+            end
+        end
+        if complete_row then
+            clearRow(y)
+        end
+    end
+end
+
 function generatePiece()
     pieceType = math.random(1, #piecesStructures)
     pieceRotation = 1

@@ -24,6 +24,7 @@ function love.update(dt)
         timer = 0
         if checkCollision() then
             lockPiece()
+            findCompleteRows()
             generatePiece()
         else
             piece_y = piece_y + 1
