@@ -22,7 +22,7 @@ function love.update(dt)
     timer = timer + dt
     if timer >= pieces_fall_speed then
         timer = 0
-        if checkCollision() then
+        if checkCollision('v') then
             lockPiece()
             findCompleteRows()
             generatePiece()

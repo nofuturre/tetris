@@ -39,36 +39,77 @@ function fillBoard()
     end
 end
 
+function allignToBorder(new_rotation)
+    if  piece_x == grid_right_boundary - #piecesStructures[pieceType][pieceRotation][1] then
+        len_diff = #piecesStructures[pieceType][new_rotation][1] - #piecesStructures[pieceType][pieceRotation][1]
+        if len_diff > 0 then
+            piece_x = piece_x - len_diff
+        end
+    end
+end
+
 function rotate(key)
     if key == 'down' then
-        pieceRotation = (pieceRotation % #piecesStructures[pieceType]) + 1        
+        new_rotation = (pieceRotation % #piecesStructures[pieceType]) + 1
+        allignToBorder(new_rotation)
+        pieceRotation = new_rotation
     elseif key == 'up' then
-        pieceRotation = ((pieceRotation - 2) % #piecesStructures[pieceType]) + 1
+        new_rotation = ((pieceRotation - 2) % #piecesStructures[pieceType]) + 1
+        allignToBorder(new_rotation)
+        pieceRotation = new_rotation
     end
 end
 
 function move(key)
     if key == 'left' then
-        if piece_x > grid_left_boundary then
+        if piece_x > grid_left_boundary and not checkCollision('hl') then
             piece_x = piece_x - 1
         end
     elseif key == 'right' then
         piece_right_boundary = grid_right_boundary - #piecesStructures[pieceType][pieceRotation][1]
-        if piece_x < piece_right_boundary then
+        if piece_x < piece_right_boundary and not checkCollision('hr') then
             piece_x = piece_x + 1
         end
     end
 end
 
-function checkCollision()
+function checkHorizontalLeftCollision(block, x, y)
+    if block ~= ' ' and grid[x + piece_x - 1][y + piece_y] ~= ' ' then
+        return true
+    end
+end
+
+function checkHorizontalRightCollision(block, x, y)
+    if block ~= ' ' and grid[x + piece_x + 1][y + piece_y] ~= ' ' then
+        return true
+    end
+end
+
+function checkVerticalCollision(block, x, y)
+    if block ~= ' ' and grid[x + piece_x][y + piece_y + 1] ~= ' ' then
+        return true
+    end
+end
+
+function checkCollision(type)
     if piece_y >= gridHeight - #piecesStructures[pieceType][pieceRotation] then
         return true
     end
     for y = 1, #piecesStructures[pieceType][pieceRotation] do
         for x = 1, #piecesStructures[pieceType][pieceRotation][1] do
             local block = piecesStructures[pieceType][pieceRotation][y][x]
-            if block ~= ' ' and grid[x + piece_x][y + piece_y + 1] ~= ' ' then
-                return true
+            if type == 'hl' then
+                if checkHorizontalLeftCollision(block, x, y) then
+                    return true
+                end
+            elseif type == 'hr' then
+                if checkHorizontalRightCollision(block, x, y) then
+                    return true
+                end
+            elseif type == 'v' then
+                if checkVerticalCollision(block, x, y) then
+                    return true
+                end
             end
         end
     end
