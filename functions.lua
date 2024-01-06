@@ -53,10 +53,12 @@ function rotate(key)
         new_rotation = (pieceRotation % #piecesStructures[pieceType]) + 1
         allignToBorder(new_rotation)
         pieceRotation = new_rotation
+        rotate_piece:play()
     elseif key == 'up' then
         new_rotation = ((pieceRotation - 2) % #piecesStructures[pieceType]) + 1
         allignToBorder(new_rotation)
         pieceRotation = new_rotation
+        rotate_piece:play()
     end
 end
 
@@ -117,6 +119,7 @@ function checkCollision(type)
 end
 
 function lockPiece()
+    lock_piece:play()
     for y = 1, #piecesStructures[pieceType][pieceRotation] do
         for x = 1, #piecesStructures[pieceType][pieceRotation][1] do
             local block = piecesStructures[pieceType][pieceRotation][y][x]
@@ -128,6 +131,7 @@ function lockPiece()
 end
 
 function clearRow(complete_row)
+    clear_row:play()
     for x = 1, gridWidth do
         for y = complete_row, 2, -1 do
             grid[x][y] = grid[x][y - 1]

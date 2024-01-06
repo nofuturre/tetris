@@ -19,6 +19,11 @@ timer = 0
 pieceType = 4
 pieceRotation = 1
 
+lock_piece = love.audio.newSource("lock_piece.wav", "static")
+lock_piece:setVolume(0.5)
+rotate_piece = love.audio.newSource("rotate_piece.wav", "static")
+clear_row = love.audio.newSource("clear_row.wav", "static")
+
 colors = {
     [' '] = {.87, .87, .87},
     i = {153/255, 0, 0},
