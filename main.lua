@@ -20,6 +20,7 @@ end
 function love.keypressed(key)
     rotate(key)
     move(key)
+    save_game(key)
 end
 
 function love.update(dt)

@@ -20,12 +20,40 @@ function menuUpdate(dt)
         if coursorOnNewGame(x, y) then
             currentScreen = 'game'
         elseif coursorOnLoadGame(x, y) then
+            loadGame()
             currentScreen = 'game'
         end
     end
 end
 
+function loadGame()
+    local file = io.open("game_state.txt", "r")
+
+    if file then
+        local x = 1
+        local y = 1
+        local char = file:read(1)
+
+        while char do
+            grid[x][y] = char
+            y = y + 1
+            char = file:read(1)
+            if char == ';' then
+                x = x + 1
+                y = 1
+                char = file:read(1)
+            end
+        end
+
+        file:close()
+    else
+        print("Error: Unable to open file for reading.")
+    end
+end
+
 function drawMenu()
+    love.graphics.reset()
+    love.graphics.setBackgroundColor(107/255,134/255,59/255)
     love.graphics.draw(button_load_game, button1_x, buttons_y)
     love.graphics.draw(button_new_game, button2_x, buttons_y)
 end
@@ -104,6 +132,26 @@ function move(key)
         if piece_x < piece_right_boundary and not checkCollision('hr') then
             piece_x = piece_x + 1
         end
+    end
+end
+
+function save_game(key)
+    if key == 's' then
+        local file = io.open("game_state.txt", "w")
+    
+        if file then
+            for x = 1, gridWidth do
+                for y = 1, gridHeight do
+                  file:write(grid[x][y])
+                end
+                file:write(";")
+              end
+            
+            file:close()
+        else
+            print("Error opening file for writing.")
+        end
+        currentScreen = 'menu'
     end
 end
 
