@@ -3,13 +3,18 @@ require "pieces"
 require "functions"
 
 function love.load()
-    love.graphics.setBackgroundColor(187/255,208/255,150/255)
-    drawGrid()
+    love.graphics.setBackgroundColor(107/255,134/255,59/255)
+    currentScreen = 'menu'
+    initGrid()
 end
 
 function love.draw()
-    fillBoard()
-    drawPiece()
+    if currentScreen == 'menu' then
+        drawMenu()
+    elseif currentScreen == 'game' then
+        fillBoard()
+        drawPiece()
+    end
 end
 
 function love.keypressed(key)
@@ -18,16 +23,20 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-    math.randomseed(os.clock()*100000000000)
-    timer = timer + dt
-    if timer >= pieces_fall_speed then
-        timer = 0
-        if checkCollision('v') then
-            lockPiece()
-            findCompleteRows()
-            generatePiece()
-        else
-            piece_y = piece_y + 1
+    if currentScreen == 'menu' then
+        menuUpdate(dt)
+    elseif currentScreen == 'game' then
+        math.randomseed(os.clock()*100000000000)
+        timer = timer + dt
+        if timer >= pieces_fall_speed then
+            timer = 0
+            if checkCollision('v') then
+                lockPiece()
+                findCompleteRows()
+                generatePiece()
+            else
+                piece_y = piece_y + 1
+            end
         end
     end
 end

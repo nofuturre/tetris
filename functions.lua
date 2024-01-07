@@ -1,4 +1,36 @@
-function drawGrid()
+require "menu_settings"
+
+function coursorOnLoadGame(x, y)
+    if x > button1_x and x < button1_x + button_width and y > buttons_y and y < buttons_y + button_height then
+        return true
+    end
+    return false
+end
+
+function coursorOnNewGame(x, y)
+    if x > button2_x and x < button2_x + button_width and y > buttons_y and y < buttons_y + button_height then
+        return true
+    end
+    return false
+end
+
+function menuUpdate(dt)
+    if love.mouse.isDown(1) then
+        local x, y = love.mouse.getX(), love.mouse.getY()
+        if coursorOnNewGame(x, y) then
+            currentScreen = 'game'
+        elseif coursorOnLoadGame(x, y) then
+            currentScreen = 'game'
+        end
+    end
+end
+
+function drawMenu()
+    love.graphics.draw(button_load_game, button1_x, buttons_y)
+    love.graphics.draw(button_new_game, button2_x, buttons_y)
+end
+
+function initGrid()
     for x = 1, gridWidth do
         grid[x] = {}
         for y = 1, gridHeight do
@@ -119,6 +151,7 @@ function checkCollision(type)
 end
 
 function lockPiece()
+    lock_piece:setVolume(0.2)
     lock_piece:play()
     for y = 1, #piecesStructures[pieceType][pieceRotation] do
         for x = 1, #piecesStructures[pieceType][pieceRotation][1] do
