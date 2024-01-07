@@ -32,6 +32,9 @@ function love.update(dt)
         if timer >= pieces_fall_speed then
             timer = 0
             if checkCollision('v') then
+                if piece_y <= 1 then
+                    currentScreen = 'menu'
+                end
                 lockPiece()
                 findCompleteRows()
                 generatePiece()
